@@ -3,17 +3,9 @@
 	"nameLong": "CorpCode Editor",
 	"applicationName": "corpcode",
 	"dataFolderName": ".corpcode",
+
 	"win32MutexName": "corpcode",
-	"licenseName": "MIT",
-	"licenseUrl": "https://github.com/microsoft/vscode/blob/main/LICENSE.txt",
-	"serverLicenseUrl": "https://github.com/microsoft/vscode/blob/main/LICENSE.txt",
-	"serverGreeting": [],
-	"serverLicense": [],
-	"serverLicensePrompt": "",
-	"serverApplicationName": "corpcode-server",
-	"serverDataFolderName": ".corpcode-server",
-	"tunnelApplicationName": "corpcode-tunnel",
-	"win32DirName": "CorpCode Editor",
+	"win32DirName": "CorpCode",
 	"win32NameVersion": "CorpCode Editor",
 	"win32RegValueName": "CorpCode",
 	"win32x64AppId": "{{YOUR-CUSTOM-GUID-X64}}",
@@ -24,11 +16,51 @@
 	"win32ShellNameShort": "C&orpCode",
 	"win32TunnelServiceMutex": "corpcode-tunnelservice",
 	"win32TunnelMutex": "corpcode-tunnel",
+
 	"darwinBundleIdentifier": "com.corp.corpcode",
 	"darwinProfileUUID": "47827DD9-4734-49A0-AF80-7E19B11495CC",
 	"darwinProfilePayloadUUID": "CF808BE7-53F3-46C6-A7E2-7EDB98A5E959",
+
 	"linuxIconName": "corpcode",
+
+	"licenseName": "MIT",
+	"licenseUrl": "https://github.com/microsoft/vscode/blob/main/LICENSE.txt",
+	"serverLicenseUrl": "https://github.com/microsoft/vscode/blob/main/LICENSE.txt",
 	"licenseFileName": "LICENSE.txt",
+
 	"urlProtocol": "corpcode",
-	"builtInExtensions": []
+
+	"version": "1.0.0",
+	"distro": "corpcode",
+
+	"serverGreeting": [],
+	"serverLicense": [],
+	"serverLicensePrompt": "",
+	"serverApplicationName": "corpcode-server",
+	"serverDataFolderName": ".corpcode-server",
+	"tunnelApplicationName": "corpcode-tunnel",
+
+	"builtInExtensions": [],
+
+	"enableTelemetry": false,
+	"telemetryEndpoint": "",
+	"aiConfig": {},
+
+	"extensionsGallery": {
+		"serviceUrl": "",
+		"itemUrl": "",
+		"cacheUrl": "",
+		"controlUrl": "",
+		"recommendationsUrl": ""
+	},
+
+	"extensionsAutoUpdate": false,
+	"extensionsGalleryUrl": "",
+
+	"updateUrl": "",
+	"quality": "stable",
+
+	"authenticationProviders": [],
+
+	"icon": "resources/linux/corpcode.png"
 }
