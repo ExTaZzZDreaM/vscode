@@ -1,6 +1,6 @@
 /*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
 import es from 'event-stream';
@@ -33,8 +33,7 @@ const platformOpensslDirName =
 				: 'x64-osx')
 			: (process.arch === 'arm64'
 				? 'arm64-linux'
-				: process.arch === 'arm'
-					? 'arm-linux'
+				? 'arm-linux'
 					: 'x64-linux');
 const platformOpensslDir = path.join(rootAbs, 'openssl', 'package', 'out', platformOpensslDirName);
 
@@ -76,6 +75,8 @@ const compileFromSources = (callback: (err?: string) => void) => {
 	});
 };
 
+/*
+// УДАЛЕНА ЛОГИКА СКАЧИВАНИЯ OPENSSL С NPM
 const acquireBuiltOpenSSL = (callback: (err?: unknown) => void) => {
 	const dir = path.join(tmpdir(), 'vscode-openssl-download');
 	mkdirSync(dir, { recursive: true });
@@ -96,31 +97,23 @@ const acquireBuiltOpenSSL = (callback: (err?: unknown) => void) => {
 			callback();
 		});
 };
+*/
 
-const compileWithOpenSSLCheck = (reporter: import('./lib/reporter.ts').IReporter) => es.map((_, callback) => {
+// МОДИФИКАЦИЯ: Теперь просто компилируем и выдаем ошибку, если локальный OpenSSL не найден.
+const compileWithLocalOpenSSL = (reporter: import('./lib/reporter.ts').IReporter) => es.map((_, callback) => {
 	compileFromSources(err => {
-		if (!err) {
-			// no-op
-		} else if (err.toString().includes('Could not find directory of OpenSSL installation') && !existsSync(platformOpensslDir)) {
-			fancyLog(ansiColors.yellow(`[cli]`), 'OpenSSL libraries not found, acquiring prebuilt bits...');
-			acquireBuiltOpenSSL(err => {
-				if (err) {
-					callback(err as Error);
-				} else {
-					compileFromSources(err => {
-						if (err) {
-							reporter(err.toString());
-						}
-						callback(undefined, '');
-					});
-				}
-			});
-		} else {
-			reporter(err.toString());
+		if (err) {
+			// Выдаем ошибку компиляции, если она произошла
+			if (err.toString().includes('Could not find directory of OpenSSL installation') && !existsSync(platformOpensslDir)) {
+				reporter(`OpenSSL libraries not found. Ensure Rust and local OpenSSL libraries are correctly set up and accessible via the OPENSSL_DIR environment variable for platform: ${platformOpensslDirName}`);
+			} else {
+				reporter(err.toString());
+			}
 		}
 		callback(undefined, '');
 	});
 });
+
 
 const warnIfRustNotInstalled = () => {
 	if (!hasLocalRust()) {
@@ -133,7 +126,7 @@ const compileCliTask = task.define('compile-cli', () => {
 	warnIfRustNotInstalled();
 	const reporter = createReporter('cli');
 	return gulp.src(`${root}/Cargo.toml`)
-		.pipe(compileWithOpenSSLCheck(reporter))
+		.pipe(compileWithLocalOpenSSL(reporter))
 		.pipe(reporter.end(true));
 });
 
